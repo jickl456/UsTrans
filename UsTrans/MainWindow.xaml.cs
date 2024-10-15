@@ -71,7 +71,7 @@ namespace UsTrans
             {
                 SubscribeGlobalMouseEvents();
                 this.WindowState = WindowState.Minimized;
-                MessageBox.Show("請選擇截圖範圍");
+                
                 isSelecting = true; // 設定選取模式
             }
             else //全屏Mode
@@ -191,7 +191,12 @@ namespace UsTrans
                 UnsubscribeGlobalMouseEvents(); // 停止監聽全局滑鼠事件
                 this.WindowState = WindowState.Normal; // 還原 WPF 窗口
             }
-        } 
+        }
         #endregion
+
+        private void ClearScrBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ScreenshotImage.Source = null;
+        }
     }
 }

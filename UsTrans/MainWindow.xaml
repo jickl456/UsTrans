@@ -20,18 +20,19 @@
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="47*"/>
+                    <ColumnDefinition Width="53*"/>
                 </Grid.ColumnDefinitions>
                 <Grid>
-                    <Label Name="ModeLabel" Content="選擇模式" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="WhiteSmoke" FontSize="16" FontFamily="#Segoe UI" Margin="0,0,0,0" />
+                    <Label Name="ModeLabel" Content="選擇模式" HorizontalAlignment="left" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="WhiteSmoke" FontSize="16" FontFamily="#Segoe UI" Margin="120,0,0,0" />
                     <ComboBox Name="SelectedMode" Width="130" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,30,0">
-                        <ComboBoxItem Name="FullScreen" Content="全屏模式" FontSize="16"/>
                         <ComboBoxItem Name="AreaScreen" Content="區域模式" FontSize="16"/>
+                        <ComboBoxItem Name="FullScreen" Content="全屏模式" FontSize="16"/>
                     </ComboBox>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <Button Content="PrtScr" Name="PrtScrBtn" Click="PrtScrBtn_Click"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,110,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                    <Button Content="PrtScr" Name="PrtScrBtn" Click="PrtScrBtn_Click"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                    <Button Content="ClearScr" Name="ClearScrBtn" Click="ClearScrBtn_Click"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="110,0,0,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                     <Button Content="Start" Name="StartBtn" Click="StartBtn_Click"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,110,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                     <Button Content="Stop" Name="StopBtn" Click="StopBtn_Click"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Grid>
