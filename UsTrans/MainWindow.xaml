@@ -24,12 +24,15 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid>
-                    <RadioButton Name="FullWindowTrans" Content="全屏翻譯"/>
-                    <RadioButton Name="AreaWindowTrans" Content="區域翻譯"/>
+                    <Label Name="ModeLabel" Content="選擇模式" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="WhiteSmoke" FontSize="16" FontFamily="#Segoe UI" Margin="0,0,0,0" />
+                    <ComboBox Width="100" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,30,0">
+                        <ComboBoxItem Name="FullScreen" Content="全屏模式" FontSize="16"/>
+                        <ComboBoxItem Name="AreaScreen" Content="區域模式" FontSize="16"/>
+                    </ComboBox>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <Button Content="Start" Name="StartBtn"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,110,0" FontSize="16" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
-                    <Button Content="Stop" Name="StopBtn"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                    <Button Content="Start" Name="StartBtn"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,110,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                    <Button Content="Stop" Name="StopBtn"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Grid>
             </Grid>
             <Grid Grid.Row="2">
