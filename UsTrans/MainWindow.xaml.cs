@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using Gma.System.MouseKeyHook;
 
 namespace UsTrans
 {
@@ -27,6 +28,7 @@ namespace UsTrans
     {
         private static string PgmInfo ="UsTrans Version:"+ Assembly.GetExecutingAssembly().GetName().Version.ToString();
         private bool isSelecting;
+        private IKeyboardMouseEvents globalMouseEvents;
         private System.Windows.Point startPoint;
         private System.Windows.Point endPoint;
         public MainWindow()
@@ -67,33 +69,10 @@ namespace UsTrans
                 MessageBox.Show("請選擇模式");
             else if (SelectedMode.Text == AreaScreen.Content.ToString()) //區域Mode
             {
+                SubscribeGlobalMouseEvents();
                 this.WindowState = WindowState.Minimized;
-                Thread.Sleep(3000);
-                // 確保選擇區域有效
-                if (isSelecting) return;
-
-                // 計算截圖範圍（從螢幕座標而非 WPF 座標）
-                var left = (int)startPoint.X + (int)this.Left;
-                var top = (int)startPoint.Y + (int)this.Top;
-                var width = (int)(endPoint.X - startPoint.X);
-                var height = (int)(endPoint.Y - startPoint.Y);
-
-                // 使用 Graphics.CopyFromScreen 來截取螢幕
-                using (var bitmap = new Bitmap(width, height))
-                {
-                    using (var g = Graphics.FromImage(bitmap))
-                    {
-                        g.CopyFromScreen(left, top, 0, 0, bitmap.Size);
-                    }
-
-                    // 將 Bitmap 轉換為 BitmapImage
-                    var bitmapImage = ConvertBitmapToBitmapImage(bitmap);
-                    ScreenshotImage.Source = bitmapImage; // 顯示在 Image 控件上
-                }
-
-                // 隱藏選擇區域
-                SelectionRectangle.Visibility = Visibility.Collapsed;
-                this.WindowState = WindowState.Normal;
+                MessageBox.Show("請選擇截圖範圍");
+                isSelecting = true; // 設定選取模式
             }
             else //全屏Mode
             {
@@ -132,41 +111,87 @@ namespace UsTrans
         }
         #endregion
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        private void CaptureScreen()
         {
-            // 開始選擇區域
-            if (e.ButtonState == MouseButtonState.Pressed)
+            // 計算截圖範圍
+            int left = (int)startPoint.X;
+            int top = (int)startPoint.Y;
+            int width = (int)(endPoint.X - startPoint.X);
+            int height = (int)(endPoint.Y - startPoint.Y);
+
+            // 使用 Graphics.CopyFromScreen 截取螢幕
+            try
             {
-                isSelecting = true;
-                startPoint = e.GetPosition(this);
-                SelectionRectangle.Visibility = Visibility.Visible;
-                Canvas.SetLeft(SelectionRectangle, startPoint.X);
-                Canvas.SetTop(SelectionRectangle, startPoint.Y);
+                using (var bitmap = new Bitmap(width, height))
+                {
+                    using (var g = Graphics.FromImage(bitmap))
+                    {
+                        g.CopyFromScreen(left, top, 0, 0, bitmap.Size);
+                    }
+
+                    // 將 Bitmap 轉換為 BitmapImage
+                    var bitmapImage = ConvertBitmapToBitmapImage(bitmap);
+                    ScreenshotImage.Source = bitmapImage; // 顯示在 Image 控件上
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("擷取發生錯誤 :"+ex.Message);
+            }
+        } //擷取範圍屏幕
+        #region 全局滑鼠事件Hook
+        private void SubscribeGlobalMouseEvents()
+        {
+            globalMouseEvents = Hook.GlobalEvents(); // 訂閱全局滑鼠事件
+            globalMouseEvents.MouseDownExt += GlobalMouseEvents_MouseDownExt; // 監聽滑鼠按下事件
+            globalMouseEvents.MouseMove += GlobalMouseEvents_MouseMove; // 監聽滑鼠移動事件
+            globalMouseEvents.MouseUpExt += GlobalMouseEvents_MouseUpExt; // 監聽滑鼠放開事件
         }
 
-        private void Window_MouseMove(object sender, MouseEventArgs e)
+        private void UnsubscribeGlobalMouseEvents()
+        {
+            if (globalMouseEvents == null) return;
+            globalMouseEvents.MouseDownExt -= GlobalMouseEvents_MouseDownExt;
+            globalMouseEvents.MouseMove -= GlobalMouseEvents_MouseMove;
+            globalMouseEvents.MouseUpExt -= GlobalMouseEvents_MouseUpExt;
+            globalMouseEvents.Dispose();
+            globalMouseEvents = null;
+        }
+
+        private void GlobalMouseEvents_MouseDownExt(object sender, MouseEventExtArgs e)
         {
             if (isSelecting)
             {
-                // 更新選擇區域的大小
-                endPoint = e.GetPosition(this);
-                double x = Math.Min(startPoint.X, endPoint.X);
-                double y = Math.Min(startPoint.Y, endPoint.Y);
-                double width = Math.Abs(startPoint.X - endPoint.X);
-                double height = Math.Abs(startPoint.Y - endPoint.Y);
-
-                SelectionRectangle.Width = width;
-                SelectionRectangle.Height = height;
-                Canvas.SetLeft(SelectionRectangle, x);
-                Canvas.SetTop(SelectionRectangle, y);
+                // 紀錄滑鼠按下的位置作為開始點
+                startPoint = new System.Windows.Point(e.X, e.Y);
+                Console.WriteLine($"開始選取點: {startPoint.X}, {startPoint.Y}");
             }
         }
 
-        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+        private void GlobalMouseEvents_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            // 結束選擇區域
-            isSelecting = false;
+            if (isSelecting)
+            {
+                // 當滑鼠移動時，更新選取的終點
+                endPoint = new System.Windows.Point(e.X, e.Y);
+                Console.WriteLine($"滑鼠移動點: {endPoint.X}, {endPoint.Y}");
+            }
         }
+
+        private void GlobalMouseEvents_MouseUpExt(object sender, MouseEventExtArgs e)
+        {
+            if (isSelecting)
+            {
+                // 當滑鼠放開時，停止選取並開始截圖
+                endPoint = new System.Windows.Point(e.X, e.Y);
+                Console.WriteLine($"結束選取點: {endPoint.X}, {endPoint.Y}");
+
+                isSelecting = false; // 停止選取
+                CaptureScreen(); // 截圖選取範圍
+                UnsubscribeGlobalMouseEvents(); // 停止監聽全局滑鼠事件
+                this.WindowState = WindowState.Normal; // 還原 WPF 窗口
+            }
+        } 
+        #endregion
     }
 }

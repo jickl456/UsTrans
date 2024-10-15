@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UsTrans"
         mc:Ignorable="d"
-        MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseUp="Window_MouseUp"
         Title="UsTrans" Height="450" Width="800" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Transparent"  AllowsTransparency="True">
     <Border CornerRadius="8" BorderBrush="WhiteSmoke" BorderThickness="0.2" Background="#3C3C3C	" >
         <Grid>
