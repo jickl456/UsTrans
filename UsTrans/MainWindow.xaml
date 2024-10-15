@@ -41,7 +41,12 @@
                     <ColumnDefinition Width="18*"/>
                 </Grid.ColumnDefinitions>
                 <Grid>
-                    <!--Image-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Name="ImgLabel" Content="區塊預覽" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="WhiteSmoke" FontSize="16" FontFamily="#Segoe UI" Margin="0,0,0,0" />
+                    <Image Grid.Row="1" Name="Img" Margin="10"/>
                 </Grid>
                 <Grid Grid.Column="1">
                     <!--LOG/ UI TEXT AREA-->
