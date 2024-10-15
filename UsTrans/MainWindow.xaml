@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UsTrans"
         mc:Ignorable="d"
+        MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseUp="Window_MouseUp"
         Title="UsTrans" Height="450" Width="800" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Transparent"  AllowsTransparency="True">
     <Border CornerRadius="8" BorderBrush="WhiteSmoke" BorderThickness="0.2" Background="#3C3C3C	" >
         <Grid>
@@ -25,14 +26,15 @@
                 </Grid.ColumnDefinitions>
                 <Grid>
                     <Label Name="ModeLabel" Content="選擇模式" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="WhiteSmoke" FontSize="16" FontFamily="#Segoe UI" Margin="0,0,0,0" />
-                    <ComboBox Width="100" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,30,0">
+                    <ComboBox Name="SelectedMode" Width="130" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,30,0">
                         <ComboBoxItem Name="FullScreen" Content="全屏模式" FontSize="16"/>
                         <ComboBoxItem Name="AreaScreen" Content="區域模式" FontSize="16"/>
                     </ComboBox>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <Button Content="Start" Name="StartBtn"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,110,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
-                    <Button Content="Stop" Name="StopBtn"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                    <Button Content="PrtScr" Name="PrtScrBtn" Click="PrtScrBtn_Click"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,110,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                    <Button Content="Start" Name="StartBtn" Click="StartBtn_Click"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,110,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                    <Button Content="Stop" Name="StopBtn" Click="StopBtn_Click"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Grid>
             </Grid>
             <Grid Grid.Row="2">
@@ -46,10 +48,11 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Label Name="ImgLabel" Content="區塊預覽" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="WhiteSmoke" FontSize="16" FontFamily="#Segoe UI" Margin="0,0,0,0" />
-                    <Image Grid.Row="1" Name="Img" Margin="10"/>
+                    <Image Grid.Row="1" Name="ScreenshotImage" Margin="10"/>
+                    <Rectangle x:Name="SelectionRectangle" Stroke="Red" StrokeThickness="2" Visibility="Collapsed"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <!--LOG/ UI TEXT AREA-->
+                    <!--LOG/ UI TEXT AREA DATAGRID-->
                 </Grid>
             </Grid>
         </Grid>
