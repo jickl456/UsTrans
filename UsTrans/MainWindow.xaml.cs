@@ -26,6 +26,7 @@ namespace UsTrans
         {
             InitializeComponent();
             PgmTitle.Content = PgmInfo;
+            App.main = this;
         }
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)

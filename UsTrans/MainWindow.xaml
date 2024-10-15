@@ -28,8 +28,8 @@
                     <RadioButton Name="AreaWindowTrans" Content="區域翻譯"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <Button Content="Start" Name="StartBtn" Click="" Foreground="White" FontFamily="#Segoe UI" Width="80" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,85,0" FontSize="16" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
-                    <Button Content="Stop" Name="StopBtn" Click="" Foreground="White" FontFamily="#Segoe UI" Width="80" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                    <Button Content="Start" Name="StartBtn"  Foreground="White" FontFamily="#Segoe UI" Width="80" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,85,0" FontSize="16" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                    <Button Content="Stop" Name="StopBtn"  Foreground="White" FontFamily="#Segoe UI" Width="80" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                 </Grid>
             </Grid>
             <Grid Grid.Row="2">
