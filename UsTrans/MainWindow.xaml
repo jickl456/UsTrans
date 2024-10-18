@@ -24,6 +24,7 @@
                     <ColumnDefinition Width="53*"/>
                 </Grid.ColumnDefinitions>
                 <Grid>
+                    <Button Content="Test" Name="testBtn" Click="test_Click"  Foreground="White" FontFamily="#Segoe UI" Width="100" Height="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,0" FontSize="20" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
                     <Label Name="ModeLabel" Content="選擇模式" HorizontalAlignment="left" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="WhiteSmoke" FontSize="16" FontFamily="#Segoe UI" Margin="120,0,0,0" />
                     <ComboBox Name="SelectedMode" Width="130" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,30,0">
                         <ComboBoxItem Name="AreaScreen" Content="區域模式" FontSize="16"/>

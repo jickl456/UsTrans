@@ -56,22 +56,7 @@ namespace UsTrans
 
         private void StartBtn_Click(object sender, RoutedEventArgs e)
         {
-            // 將 ImageSource 轉換為 Bitmap
-            Bitmap bitmap = BitmapConvert.ImageSourceToBitmap(ScreenshotImage.Source);
-
-            // 將 Bitmap 轉換為 Pix
-            using (Pix pix = BitmapConvert.BitmapToPix(bitmap))
-            {
-                using (var engine = new TesseractEngine(@"C:\Users\user\Desktop\Heng\Mytest\UsTrans\UsTrans\tessdata", "eng+chi_sim+chi_tra+jpn", EngineMode.Default))
-                {
-                    using (var page = engine.Process(pix))
-                    {
-                        string text = page.GetText();
-                        Console.WriteLine("OCR Result:" + text);
-                        Result.Text= text;
-                    }
-                }
-            }
+           
         }
 
         private void StopBtn_Click(object sender, RoutedEventArgs e)
@@ -197,6 +182,26 @@ namespace UsTrans
         {
             ScreenshotImage.Source = null;
             Result.Text = null; ;
+        }
+
+        private void test_Click(object sender, RoutedEventArgs e)
+        {
+            // 將 ImageSource 轉換為 Bitmap
+            Bitmap bitmap = BitmapConvert.ImageSourceToBitmap(ScreenshotImage.Source);
+
+            // 將 Bitmap 轉換為 Pix
+            using (Pix pix = BitmapConvert.BitmapToPix(bitmap))
+            {
+                using (var engine = new TesseractEngine(@"C:\Users\user\Desktop\Heng\Mytest\UsTrans\UsTrans\tessdata", "eng+chi_sim+chi_tra+jpn", EngineMode.Default))
+                {
+                    using (var page = engine.Process(pix))
+                    {
+                        string text = page.GetText();
+                        Console.WriteLine("OCR Result:" + text);
+                        Result.Text = text;
+                    }
+                }
+            }
         }
     }
 }
