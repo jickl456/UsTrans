@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
 using Gma.System.MouseKeyHook;
+using Tesseract;
 
 namespace UsTrans
 {
@@ -55,7 +56,22 @@ namespace UsTrans
 
         private void StartBtn_Click(object sender, RoutedEventArgs e)
         {
-            
+            // 將 ImageSource 轉換為 Bitmap
+            Bitmap bitmap = BitmapConvert.ImageSourceToBitmap(ScreenshotImage.Source);
+
+            // 將 Bitmap 轉換為 Pix
+            using (Pix pix = BitmapConvert.BitmapToPix(bitmap))
+            {
+                using (var engine = new TesseractEngine(@"C:\Users\user\Desktop\Heng\Mytest\UsTrans\UsTrans\tessdata", "eng+chi_sim+chi_tra+jpn", EngineMode.Default))
+                {
+                    using (var page = engine.Process(pix))
+                    {
+                        string text = page.GetText();
+                        Console.WriteLine("OCR Result:" + text);
+                        Result.Text= text;
+                    }
+                }
+            }
         }
 
         private void StopBtn_Click(object sender, RoutedEventArgs e)
@@ -85,31 +101,13 @@ namespace UsTrans
                     }
 
                     // 將 Bitmap 轉換為 BitmapImage
-                    var bitmapImage = ConvertBitmapToBitmapImage(bitmap);
+                    var bitmapImage = BitmapConvert.ConvertBitmapToBitmapImage(bitmap);
                     ScreenshotImage.Source = bitmapImage; // 顯示在 Image 控件上
                 }
                 this.WindowState = WindowState.Normal;
             }
         }
-        #region BitMap轉換 Image
-        private BitmapImage ConvertBitmapToBitmapImage(Bitmap bitmap)
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                bitmap.Save(memoryStream, ImageFormat.Png);
-                memoryStream.Position = 0;
 
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memoryStream;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad; // 確保流在加載後關閉
-                bitmapImage.EndInit();
-                bitmapImage.Freeze(); // 鎖定以提高性能
-
-                return bitmapImage;
-            }
-        }
-        #endregion
 
         private void CaptureScreen()
         {
@@ -130,7 +128,7 @@ namespace UsTrans
                     }
 
                     // 將 Bitmap 轉換為 BitmapImage
-                    var bitmapImage = ConvertBitmapToBitmapImage(bitmap);
+                    var bitmapImage = BitmapConvert.ConvertBitmapToBitmapImage(bitmap);
                     ScreenshotImage.Source = bitmapImage; // 顯示在 Image 控件上
                 }
             }
@@ -139,6 +137,7 @@ namespace UsTrans
                 Console.WriteLine("擷取發生錯誤 :"+ex.Message);
             }
         } //擷取範圍屏幕
+
         #region 全局滑鼠事件Hook
         private void SubscribeGlobalMouseEvents()
         {
@@ -197,6 +196,7 @@ namespace UsTrans
         private void ClearScrBtn_Click(object sender, RoutedEventArgs e)
         {
             ScreenshotImage.Source = null;
+            Result.Text = null; ;
         }
     }
 }
