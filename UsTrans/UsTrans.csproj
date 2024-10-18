@@ -129,6 +129,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="tessdata\chi_sim.traineddata" />
+    <None Include="tessdata\chi_tra.traineddata" />
+    <None Include="tessdata\eng.traineddata" />
+    <None Include="tessdata\jpn.traineddata" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -148,5 +152,6 @@
   <ItemGroup>
     <Resource Include="Images\trans.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
