@@ -53,7 +53,7 @@
                     <Rectangle x:Name="SelectionRectangle" Stroke="Red" StrokeThickness="2" Visibility="Collapsed"/>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <TextBlock Name="Result" Background="Transparent" Text=""/>
+                    <TextBlock Name="Result" Background="Transparent" Text="" TextWrapping="Wrap"/>
                 </Grid>
             </Grid>
         </Grid>

@@ -20,14 +20,28 @@ using System.Threading;
 using Gma.System.MouseKeyHook;
 using Tesseract;
 
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.Graphics.Imaging;
+using Windows.Media.Ocr;
+
+using static System.Net.Mime.MediaTypeNames;
+
 namespace UsTrans
 {
-    /// <summary>
-    /// MainWindow.xaml 的互動邏輯
-    /// </summary>
-    public partial class MainWindow : Window
+	/// <summary>
+	/// MainWindow.xaml 的互動邏輯
+	/// </summary>
+	public partial class MainWindow : Window
     {
-        private static string PgmInfo ="UsTrans Version:"+ Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public static MemoryStream ToMemoryStream(Bitmap b)
+        {
+            MemoryStream ms = new MemoryStream();
+            b.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            return ms;
+        }
+
+		private static string PgmInfo ="UsTrans Version:"+ Assembly.GetExecutingAssembly().GetName().Version.ToString();
         private bool isSelecting;
         private IKeyboardMouseEvents globalMouseEvents;
         private System.Windows.Point startPoint;
@@ -184,24 +198,42 @@ namespace UsTrans
             Result.Text = null; ;
         }
 
-        private void test_Click(object sender, RoutedEventArgs e)
+        private async void test_Click(object sender, RoutedEventArgs e)
         {
-            // 將 ImageSource 轉換為 Bitmap
-            Bitmap bitmap = BitmapConvert.ImageSourceToBitmap(ScreenshotImage.Source);
+            //// 將 ImageSource 轉換為 Bitmap
+            //Bitmap bitmap = BitmapConvert.ImageSourceToBitmap(ScreenshotImage.Source);
 
-            // 將 Bitmap 轉換為 Pix
-            using (Pix pix = BitmapConvert.BitmapToPix(bitmap))
-            {
-                using (var engine = new TesseractEngine(@"C:\Users\user\Desktop\Heng\Mytest\UsTrans\UsTrans\tessdata", "eng+chi_sim+chi_tra+jpn", EngineMode.Default))
-                {
-                    using (var page = engine.Process(pix))
-                    {
-                        string text = page.GetText();
-                        Console.WriteLine("OCR Result:" + text);
-                        Result.Text = text;
-                    }
-                }
-            }
-        }
+			//// 將 Bitmap 轉換為 Pix
+			//using (Pix pix = BitmapConvert.BitmapToPix(bitmap))
+			//{
+			//    using (var engine = new TesseractEngine(@"C:\Users\user\Desktop\Heng\Mytest\UsTrans\UsTrans\tessdata", "eng+chi_sim+chi_tra+jpn", EngineMode.Default))
+			//    {
+			//        using (var page = engine.Process(pix))
+			//        {
+			//            string text = page.GetText();
+			//            Console.WriteLine("OCR Result:" + text);
+			//            Result.Text = text;
+			//        }
+			//    }
+			//}
+
+
+			SoftwareBitmap softwareBitmap;
+			// 將 ImageSource 轉換為 Bitmap
+			var bmpFile = BitmapConvert.ImageSourceToBitmap(ScreenshotImage.Source);
+			// 保存した画像をSoftwareBitmap形式で読み込み
+			using (IRandomAccessStream stream = ToMemoryStream(bmpFile).AsRandomAccessStream())
+			{
+				Windows.Graphics.Imaging.BitmapDecoder decoder = await Windows.Graphics.Imaging.BitmapDecoder.CreateAsync(stream);
+				softwareBitmap = await decoder.GetSoftwareBitmapAsync();
+
+				OcrEngine ocrEngine = OcrEngine.TryCreateFromUserProfileLanguages();
+				// OCR実行
+				var ocrResult = await ocrEngine.RecognizeAsync(softwareBitmap);
+				Console.WriteLine("OCR Result:" + ocrResult.Text);
+				Result.Text = ocrResult.Text.ToString();
+
+			}
+		}
     }
 }
